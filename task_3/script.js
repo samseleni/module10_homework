@@ -39,7 +39,7 @@ const success = (position) => {
 
 websocket = new WebSocket(wsUrl);
 websocket.onopen = function(evt) {
-    websocket.send(input);
+    console.log('Соединение установлено');
 };
 websocket.onmessage = function(evt) {
     writeToScreen(evt.data, "output-answer");
