@@ -37,22 +37,24 @@ const success = (position) => {
    writeToScreen(`<a href=${link} target="_blank">Местоположение</a>`);
 }
 
+websocket = new WebSocket(wsUrl);
+websocket.onopen = function(evt) {
+    websocket.send(input);
+};
+websocket.onmessage = function(evt) {
+    writeToScreen(evt.data, "output-answer");
+};
+websocket.onerror = function(evt) {
+    writeToScreen(
+    '<span style="color: red;">ERROR:</span> ' + evt.data
+    );
+};
+
 // Обработчик на кнопку отправки сообщения и получения эхо-ответа и вывода соответствующих сообщений в чат
 btnSend.addEventListener('click', () => {
     let input = document.querySelector('input').value;
     writeToScreen(input);
-    websocket = new WebSocket(wsUrl);
-    websocket.onopen = function(evt) {
-        websocket.send(input);
-    };
-    websocket.onmessage = function(evt) {
-        writeToScreen(evt.data, "output-answer");
-    };
-    websocket.onerror = function(evt) {
-        writeToScreen(
-        '<span style="color: red;">ERROR:</span> ' + evt.data
-        );
-    };
+    websocket.send(input);
     document.querySelector('input').value = '';
 });
 
